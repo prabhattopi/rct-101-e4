@@ -7,20 +7,51 @@ import {
   updateCartItem,
 } from "../../../store/cart/cart.actions";
 
-const Product = () => {
-  const id = null;
+
+const Product = ({id,name,description}) => {
+  const dispatch=useDispatch()
+  const cart=useSelector((state)=>state.cart)
+  console.log(cart)
+
+  const handleAdd=()=>{
+    dispatch(addItemToCart({
+      productId:id,
+      count:1
+    }))
+  }
+  const handleupdate=(newcount)=>{
+    if(newcount==0){
+      dispatch(removeItemFromCart(cart.id))
+    }
+    else{
+      dispatch(updateCartItem(
+        cart.id,
+        {
+        count:newcount}
+      ))
+    }
+  }
+
+  
+  
+
+
   return (
     <div data-cy={`product-${id}`}>
-      <h3 data-cy="product-name">name</h3>
-      <h6 data-cy="product-description">description</h6>
-      <button data-cy="product-add-item-to-cart-button"></button>
-      <div>
-        <button data-cy="product-increment-cart-item-count-button"></button>
-        <span data-cy="product-count"></span>
-        <button data-cy="product-decrement-cart-item-count-button"></button>
-        <button data-cy="product-remove-cart-item-button"></button>
+      <h3 data-cy="product-name">{name}</h3>
+      <h6 data-cy="product-description">{description}</h6>
+      
+      {cart.count==0?(<button data-cy="product-add-item-to-cart-button" onClick={handleAdd}>Add-to-cart</button>):(
+        <div>
+        <button data-cy="product-increment-cart-item-count-button" onClick={()=>handleupdate(cart.count+1)}>+</button>
+        <span data-cy="product-count">{cart.count}</span>
+        <button data-cy="product-decrement-cart-item-count-button" onClick={()=>handleupdate(cart.count+1)}>-</button>
+        <button data-cy="product-remove-cart-item-button" onClick={()=>handleupdate(0)}>Remove</button>
       </div>
+)}
     </div>
+      
+      
   );
 };
 
