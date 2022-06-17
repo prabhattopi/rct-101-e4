@@ -21,7 +21,7 @@ const cartInitalState = {
   data: [],
 };
 export const cartReducer = (state = cartInitalState,{type,payload}) => {
-  console.log(state,type)
+
   switch(type){
      case GET_CART_ITEMS_LOADING:{
       return{
@@ -102,17 +102,14 @@ export const cartReducer = (state = cartInitalState,{type,payload}) => {
       }
      }
      case UPDATE_CART_ITEMS_SUCCESS:{
-      return{
-        ...state,
-        updateCartItem:{
-          ...state.updateCartItem,
-          loading:false,
-          error: false,
-
-        },
-        data:state.data.map(e=>(e.id==payload.id?e.count+=payload.count:e))
-      }
-     }
+      const newItems = state.data.map((cI) => {
+        if (cI.id === payload.id) {
+          return payload;
+        } else return cI;
+      });
+      return { ...state, data: newItems, updateCartItem: { loading: false } };
+    }
+     
      case UPDATE_CART_ITEMS_ERROR:{
       return{
         ...state,
@@ -137,17 +134,11 @@ export const cartReducer = (state = cartInitalState,{type,payload}) => {
      }
      case REMOVE_CART_ITEMS_SUCCESS:{
       
-      return{
-        ...state,
-        removeCartItem:{
-          ...state.removeCartItem,
-          loading:false,
-          error: false,
-
-        },
-        data:state.data.filter((e)=>(e.id!=payload.id))
-      }
-     }
+      const newItems = state.data.filter((cI) => cI.id !== payload.id);
+      return { ...state, data: newItems, removeCartItem: { loading: false } };
+    }
+   
+     
      case REMOVE_CART_ITEMS_ERROR:{
       return{
         ...state,

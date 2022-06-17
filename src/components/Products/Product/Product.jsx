@@ -10,8 +10,17 @@ import {
 
 const Product = ({id,name,description}) => {
   const dispatch=useDispatch()
-  const cart=useSelector((state)=>state.cart)
-  console.log(cart)
+  const cart=useSelector((state)=>{
+    return(
+      state.cart.data.find((e)=>e.productId==id)||{count:0}
+    )
+  }
+  
+  
+  )
+
+
+
 
   const handleAdd=()=>{
     dispatch(addItemToCart({
@@ -20,14 +29,14 @@ const Product = ({id,name,description}) => {
     }))
   }
   const handleupdate=(newcount)=>{
+   
     if(newcount==0){
       dispatch(removeItemFromCart(cart.id))
     }
     else{
       dispatch(updateCartItem(
         cart.id,
-        {
-        count:newcount}
+        {count:newcount},
       ))
     }
   }
@@ -43,9 +52,9 @@ const Product = ({id,name,description}) => {
       
       {cart.count==0?(<button data-cy="product-add-item-to-cart-button" onClick={handleAdd}>Add-to-cart</button>):(
         <div>
-        <button data-cy="product-increment-cart-item-count-button" onClick={()=>handleupdate(cart.count+1)}>+</button>
+        <button data-cy="product-increment-cart-item-count-button" onClick={()=>handleupdate(cart.count + 1)}>+</button>
         <span data-cy="product-count">{cart.count}</span>
-        <button data-cy="product-decrement-cart-item-count-button" onClick={()=>handleupdate(cart.count+1)}>-</button>
+        <button data-cy="product-decrement-cart-item-count-button" onClick={()=>handleupdate(cart.count-1)}>-</button>
         <button data-cy="product-remove-cart-item-button" onClick={()=>handleupdate(0)}>Remove</button>
       </div>
 )}
