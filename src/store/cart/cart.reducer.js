@@ -104,10 +104,11 @@ export const cartReducer = (state = cartInitalState,{type,payload}) => {
      case UPDATE_CART_ITEMS_SUCCESS:{
       const newItems = state.data.map((cI) => {
         if (cI.id === payload.id) {
+
           return payload;
         } else return cI;
       });
-      return { ...state, data: newItems, updateCartItem: { loading: false } };
+      return { ...state, data:newItems, updateCartItem: { loading: false } };
     }
      
      case UPDATE_CART_ITEMS_ERROR:{

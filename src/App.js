@@ -23,7 +23,7 @@ function App() {
       navigate("/login")
     }
   
-  }, [data.isAuthenticated,dispatch])
+  }, [data.isAuthenticated,dispatch,from,navigate])
   
   return <div className="App">
     <Navbar/>
